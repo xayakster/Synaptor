@@ -1,0 +1,77 @@
+# -*- coding: utf-8 -*-
+"""
+Channel registry — lists all supported platforms for doctor checks.
+"""
+
+
+import sys, os
+try:
+    if hasattr(sys.stdout, 'reconfigure'):
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    if hasattr(sys.stderr, 'reconfigure'):
+        sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+except Exception:
+    pass
+_PKG_PARENT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _PKG_PARENT not in sys.path:
+    sys.path.insert(0, _PKG_PARENT)
+from typing import List, Optional
+
+# Import all channels
+from .base import Channel
+from .bilibili import BilibiliChannel
+from .boss import BossChannel
+from .exa_search import ExaSearchChannel
+from .facebook import FacebookChannel
+from .github import GitHubChannel
+from .instagram import InstagramChannel
+from .linkedin import LinkedInChannel
+from .reddit import RedditChannel
+from .rss import RSSChannel
+from .twitter import TwitterChannel
+from .v2ex import V2EXChannel
+from .web import WebChannel
+from .xiaohongshu import XiaoHongShuChannel
+from .xiaoyuzhou import XiaoyuzhouChannel
+from .xueqiu import XueqiuChannel
+from .youtube import YouTubeChannel
+
+ALL_CHANNELS: List[Channel] = [
+    GitHubChannel(),
+    TwitterChannel(),
+    YouTubeChannel(),
+    RedditChannel(),
+    FacebookChannel(),
+    InstagramChannel(),
+    BilibiliChannel(),
+    XiaoHongShuChannel(),
+    LinkedInChannel(),
+    BossChannel(),
+    XiaoyuzhouChannel(),
+    V2EXChannel(),
+    XueqiuChannel(),
+    RSSChannel(),
+    ExaSearchChannel(),
+    WebChannel(),
+]
+
+
+def get_channel(name: str) -> Optional[Channel]:
+    """Get a channel by name."""
+    for ch in ALL_CHANNELS:
+        if ch.name == name:
+            return ch
+    return None
+
+
+def get_all_channels() -> List[Channel]:
+    """Get all registered channels."""
+    return ALL_CHANNELS
+
+
+__all__ = [
+    "Channel",
+    "ALL_CHANNELS",
+    "get_channel",
+    "get_all_channels",
+]

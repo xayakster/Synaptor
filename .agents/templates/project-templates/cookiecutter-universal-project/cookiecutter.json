@@ -1,0 +1,42 @@
+{
+  "project_name": "My Agentic App",
+  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
+  "description": "A modern, agent-enabled project with robust architecture and automated planning.",
+  "author_name": "Developer",
+  "version": "0.1.0",
+  "project_type": [
+    "fullstack-nextjs",
+    "nextjs-tailwind-shadcn",
+    "clean-architecture-node",
+    "fullstack",
+    "frontend",
+    "python-agent",
+    "api"
+  ],
+  "frontend_stack": [
+    "nextjs-app-router",
+    "react-vite",
+    "vanilla-html",
+    "none"
+  ],
+  "styling_framework": [
+    "tailwind-css",
+    "vanilla-css"
+  ],
+  "ui_component_system": [
+    "shadcn-ui",
+    "custom",
+    "none"
+  ],
+  "backend_architecture": [
+    "clean-architecture",
+    "server-actions",
+    "express-rest",
+    "none"
+  ],
+  "enable_gsap": [
+    "yes",
+    "no"
+  ],
+  "enable_planning_with_files": "yes"
+}

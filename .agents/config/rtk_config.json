@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "name": "rtk-configuration",
+  "version": "0.2.0",
+  "upstream": {
+    "repository": "https://github.com/rtk-ai/rtk.git",
+    "commit": "028dfac7fa0b467ecda938e55e5ca803ef5094f0"
+  },
+  "settings": {
+    "enabled": true,
+    "max_output_lines": 150,
+    "auto_proxy_native": true,
+    "supported_commands": [
+      "git",
+      "cargo",
+      "npm",
+      "pnpm",
+      "yarn",
+      "pytest",
+      "docker",
+      "find",
+      "grep"
+    ],
+    "log_token_savings": true
+  }
+}

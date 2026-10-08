@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Central MCP Server Registry",
+  "version": "1.0.0",
+  "updated_at": "2026-10-08",
+  "servers": [
+    {
+      "name": "context7",
+      "repository": "https://github.com/upstash/context7.git",
+      "purpose": "Up-to-date documentation and code examples for libraries and frameworks",
+      "version": "4.2.0",
+      "transport": "stdio",
+      "installation_method": "npx @upstash/context7-mcp or local node_modules/@upstash/context7-mcp/dist/index.js",
+      "authentication": "None required for public docs (optional CONTEXT7_API_KEY for higher limits)",
+      "required_credentials": [],
+      "tools": [
+        {
+          "name": "resolve-library-id",
+          "description": "Resolves a package/product name to a Context7-compatible library ID (format: /org/project)",
+          "required_params": ["libraryName", "query"],
+          "status": "VERIFIED_ACTIVE"
+        },
+        {
+          "name": "query-docs",
+          "description": "Retrieves and queries up-to-date documentation and code examples from Context7",
+          "required_params": ["libraryId", "query"],
+          "status": "VERIFIED_ACTIVE"
+        }
+      ],
+      "scope": "Global & Project Development",
+      "configuration_location": "C:/Users/Asus/.gemini/config/mcp_config.json",
+      "status": "READY",
+      "last_verified": "2026-10-08"
+    },
+    {
+      "name": "tavily-search",
+      "repository": "https://github.com/tavily-ai/tavily-mcp.git",
+      "purpose": "Web search and intelligent research agent",
+      "transport": "stdio",
+      "installation_method": "node C:/Users/Asus/.gemini/config/node_modules/tavily-mcp/build/index.js",
+      "authentication": "TAVILY_API_KEY",
+      "scope": "Global Search & Web Intelligence",
+      "status": "READY",
+      "last_verified": "2026-10-08"
+    },
+    {
+      "name": "sqlite",
+      "repository": "https://github.com/modelcontextprotocol/servers",
+      "purpose": "Local SQLite database operations & inspections",
+      "transport": "stdio",
+      "installation_method": "node C:/Users/Asus/.gemini/config/node_modules/mcp-server-sqlite-npx/dist/index.js",
+      "scope": "Local Database Access",
+      "status": "READY",
+      "last_verified": "2026-10-08"
+    },
+    {
+      "name": "code-sandbox",
+      "repository": "https://github.com/modelcontextprotocol/servers",
+      "purpose": "Isolated code execution sandbox via Docker",
+      "transport": "stdio",
+      "installation_method": "node C:/Users/Asus/.gemini/config/node_modules/code-sandbox-mcp/build/index.js",
+      "scope": "Code Sandbox Engine",
+      "status": "READY",
+      "last_verified": "2026-10-08"
+    },
+    {
+      "name": "sentry",
+      "repository": "https://github.com/getsentry/sentry-mcp",
+      "purpose": "Sentry error tracking, issues, and events diagnostics",
+      "transport": "stdio",
+      "installation_method": "npx @sentry/mcp-server",
+      "scope": "Error & Incident Diagnostics",
+      "status": "READY",
+      "last_verified": "2026-10-08"
+    },
+    {
+      "name": "youtube-transcript",
+      "repository": "https://github.com/alexspalato/youtube-transcript-mcp",
+      "purpose": "Extract YouTube video transcripts",
+      "transport": "stdio",
+      "installation_method": "node C:/Users/Asus/.gemini/config/node_modules/@alexspalato/youtube-transcript-mcp/build/index.js",
+      "scope": "Media Transcript Extraction",
+      "status": "READY",
+      "last_verified": "2026-10-08"
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "version": "1.0.0",
+  "updated_at": "2026-10-08",
+  "title": "Full-Stack & Backend Technology Decision Matrix",
+  "frameworks": {
+    "node_typescript": [
+      {
+        "name": "Next.js (App Router)",
+        "type": "Full-Stack React Framework",
+        "best_for": "Modern full-stack web applications, marketing sites, SaaS platforms with SSR/SSG/Server Actions",
+        "pros": ["Unified frontend/backend", "Zero config bundling", "Server Components", "Vercel edge deployment"],
+        "cons": ["Vendor coupling to Vercel primitives", "Cold starts on serverless lambdas"],
+        "complexity": "Low-to-Medium"
+      },
+      {
+        "name": "Express.js",
+        "type": "Minimalist Web Framework",
+        "best_for": "Lightweight REST APIs, legacy migration, quick prototypes",
+        "pros": ["Massive ecosystem", "Simple middleware pattern", "High familiarity"],
+        "cons": ["Unopinionated", "No built-in TypeScript types", "Manual architecture needed"],
+        "complexity": "Low"
+      },
+      {
+        "name": "Fastify",
+        "type": "High-Performance Web Framework",
+        "best_for": "High-throughput JSON APIs, schema-validated microservices",
+        "pros": ["Extremely fast", "JSON schema validation built-in", "Plugin encapsulation", "TypeScript native"],
+        "cons": ["Smaller plugin ecosystem than Express"],
+        "complexity": "Medium"
+      },
+      {
+        "name": "NestJS",
+        "type": "Enterprise Structured Framework",
+        "best_for": "Large enterprise backends, teams from Angular/Spring background, complex domain architectures",
+        "pros": ["Built-in Dependency Injection", "Modular architecture", "Decorator-driven routing", "Microservices support"],
+        "cons": ["Heavy boilerplate", "Steep learning curve"],
+        "complexity": "High"
+      }
+    ],
+    "python": [
+      {
+        "name": "FastAPI",
+        "type": "Modern Async Python API Framework",
+        "best_for": "High-speed APIs, ML model serving, data pipelines",
+        "pros": ["Pydantic type safety", "Automatic OpenAPI Swagger docs", "Asyncio native"],
+        "cons": ["Requires async discipline"],
+        "complexity": "Medium"
+      },
+      {
+        "name": "Django",
+        "type": "Batteries-Included Web Framework",
+        "best_for": "Monolithic web apps, rapid admin dashboards, CMS",
+        "pros": ["Complete ORM, auth, and admin interface out of the box", "Huge ecosystem"],
+        "cons": ["Heavyweight", "Monolithic structure"],
+        "complexity": "Medium"
+      }
+    ],
+    "go": [
+      {
+        "name": "Gin / Fiber / Standard net/http",
+        "type": "Compiled High-Throughput Service",
+        "best_for": "Microservices, low-latency APIs, CPU/memory constrained systems",
+        "pros": ["Extremely fast", "Low memory footprint", "Single binary deployment"],
+        "cons": ["More verbose boilerplate"],
+        "complexity": "Medium"
+      }
+    ]
+  },
+  "databases": {
+    "relational": [
+      {
+        "name": "PostgreSQL",
+        "best_for": "Default relational database for 95% of production applications",
+        "pros": ["JSONB support", "Extensions (pgvector, PostGIS)", "ACID compliance", "Mature tooling"],
+        "cons": ["Requires connection pooler (PgBouncer) for serverless"],
+        "complexity": "Medium"
+      },
+      {
+        "name": "SQLite / LibSQL (Turso)",
+        "best_for": "Local development, embedded tools, mobile apps, edge-replicated databases",
+        "pros": ["Zero server management", "File-based", "Ultra-fast local queries"],
+        "cons": ["Single write lock (not for massive concurrent write loads)"],
+        "complexity": "Very Low"
+      }
+    ],
+    "nosql_and_cache": [
+      {
+        "name": "Redis",
+        "type": "In-Memory Data Store & Cache",
+        "best_for": "Session storage, rate limiting, caching query results, pub/sub messaging",
+        "pros": ["Sub-millisecond latency", "Rich data structures (hashes, sets, sorted sets)"],
+        "complexity": "Low"
+      },
+      {
+        "name": "MongoDB",
+        "type": "Document Database",
+        "best_for": "Hierarchical document storage, rapidly changing schemas, catalogs",
+        "pros": ["Flexible JSON schema", "Horizontal sharding built-in"],
+        "complexity": "Medium"
+      }
+    ]
+  },
+  "orms_and_query_builders": [
+    {
+      "name": "Prisma",
+      "ecosystem": "Node/TypeScript",
+      "best_for": "Productivity-first TypeScript applications",
+      "pros": ["Intuitive schema DSL", "Type-safe auto-generated client", "Automated migrations"],
+      "cons": ["Rust query engine overhead on cold starts"],
+      "complexity": "Low"
+    },
+    {
+      "name": "Drizzle ORM",
+      "ecosystem": "Node/TypeScript",
+      "best_for": "Zero-overhead serverless and edge applications",
+      "pros": ["SQL-like syntax", "Zero dependencies", "Near-instant startup", "Pure TypeScript schema"],
+      "cons": ["Younger ecosystem than Prisma"],
+      "complexity": "Medium"
+    }
+  ],
+  "message_brokers": [
+    {
+      "name": "RabbitMQ",
+      "type": "AMQP Message Queue",
+      "best_for": "Complex routing, task worker queues, RPC patterns",
+      "pros": ["Flexible exchange routing", "Dead letter exchanges", "High reliability"],
+      "complexity": "Medium"
+    },
+    {
+      "name": "Apache Kafka",
+      "type": "Distributed Event Log",
+      "best_for": "High-throughput real-time stream processing, event sourcing, analytics pipelines",
+      "pros": ["Massive throughput", "Replayable event log", "Horizontal partitioning"],
+      "cons": ["Operational complexity"],
+      "complexity": "High"
+    }
+  ]
+}

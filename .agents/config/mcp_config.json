@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "name": "reusable-agent-mcp-config",
+  "version": "1.0.0",
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp"
+      ],
+      "env": {},
+      "description": "Context7 live documentation & code examples MCP server"
+    }
+  }
+}

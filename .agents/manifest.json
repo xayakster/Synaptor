@@ -1,0 +1,230 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "name": "synaptor-agent-infrastructure",
+  "version": "3.2.0",
+  "updated_at": "2026-10-08",
+  "upstream_repositories": [
+    {
+      "name": "planning-with-files",
+      "url": "https://github.com/OthmanAdi/planning-with-files.git",
+      "commit": "16e3ba895da9beae61ca55a3036eecfc51aa27d7",
+      "release": "v2.4.0",
+      "purpose": "Persistent file-based planning across context loss, compaction, and /clear",
+      "license": "MIT",
+      "installed_components": [
+        { "type": "skill", "path": ".agents/skills/planning-with-files" },
+        { "type": "rule", "path": ".agents/rules/planning-with-files.md" },
+        { "type": "workflow", "path": ".agents/workflows/planning-with-files.md" },
+        { "type": "templates", "path": ".agents/templates/" }
+      ],
+      "dependencies": { "python": ">=3.8" }
+    },
+    {
+      "name": "rtk",
+      "url": "https://github.com/rtk-ai/rtk.git",
+      "commit": "028dfac7fa0b467ecda938e55e5ca803ef5094f0",
+      "release": "v0.2.0",
+      "purpose": "High-performance CLI output token filter saving up to 60-90% context tokens",
+      "license": "Apache-2.0",
+      "installed_components": [
+        { "type": "skill", "path": ".agents/skills/rtk-token-killer" },
+        { "type": "skill", "path": ".agents/skills/rtk-tdd" },
+        { "type": "rule", "path": ".agents/rules/rtk-token-optimization.md" },
+        { "type": "workflow", "path": ".agents/workflows/rtk-optimize.md" },
+        { "type": "tool", "path": ".agents/tools/rtk/rtk_filter.py" },
+        { "type": "config", "path": ".agents/config/rtk_config.json" }
+      ],
+      "dependencies": { "python": ">=3.8", "optional_native_binary": "rtk" }
+    },
+    {
+      "name": "mantis",
+      "url": "https://github.com/google/mantis.git",
+      "commit": "db071ca1375d3112c3240a6b9a8cf633a69a2a91",
+      "purpose": "Autonomous vulnerability discovery, threat modeling, and invariant patch synthesis",
+      "license": "Apache-2.0",
+      "installed_components": [
+        { "type": "skill", "path": ".agents/skills/mantis-security-audit" },
+        { "type": "skill", "path": ".agents/skills/mantis-configure" },
+        { "type": "skill", "path": ".agents/skills/mantis-launch" },
+        { "type": "rule", "path": ".agents/rules/mantis-security-standards.md" },
+        { "type": "workflow", "path": ".agents/workflows/mantis-scan.md" },
+        { "type": "tools", "path": ".agents/tools/mantis/" },
+        { "type": "config", "path": ".agents/config/mantis_config.json" }
+      ],
+      "dependencies": { "python": ">=3.10", "packages": ["pydantic", "sqlite3"] }
+    },
+    {
+      "name": "agent-reach",
+      "url": "https://github.com/Panniantong/Agent-Reach.git",
+      "commit": "94f06c1969dfc1834001269d79d3ad0972d9dee6",
+      "purpose": "Multichannel internet reach across 16+ social, search, dev, and video platforms",
+      "license": "MIT",
+      "installed_components": [
+        { "type": "skill", "path": ".agents/skills/agent-reach" },
+        { "type": "rule", "path": ".agents/rules/agent-reach-policy.md" },
+        { "type": "workflow", "path": ".agents/workflows/agent-reach.md" },
+        { "type": "package", "path": ".agents/tools/agent_reach/" },
+        { "type": "config", "path": ".agents/config/agent_reach_config.yaml" }
+      ],
+      "dependencies": { "python": ">=3.10", "packages": ["requests", "pyyaml"] }
+    },
+    {
+      "name": "cookiecutter",
+      "url": "https://github.com/cookiecutter/cookiecutter.git",
+      "commit": "c88fbe921c97c58b65f1883ba90a0ab53cc91b34",
+      "purpose": "Standardized project scaffolding and Jinja2-compatible template system",
+      "license": "BSD-3-Clause",
+      "installed_components": [
+        { "type": "skill", "path": ".agents/skills/project-scaffolding" },
+        { "type": "rule", "path": ".agents/rules/project-scaffolding.md" },
+        { "type": "workflow", "path": ".agents/workflows/scaffold-project.md" },
+        { "type": "templates", "path": ".agents/templates/project-templates/" },
+        { "type": "tool", "path": ".agents/tools/cookiecutter/project_scaffold.py" }
+      ],
+      "dependencies": { "python": ">=3.8" }
+    },
+    {
+      "name": "ui-ux-pro-max-skill",
+      "url": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill.git",
+      "commit": "1a2c459b35f26116fd165b0a0f30597f252749ff",
+      "purpose": "UI/UX design intelligence (79 styles, 192 product palettes, 74 font pairings, 119 UX guidelines, 22 stacks)",
+      "license": "MIT",
+      "installed_components": [
+        { "type": "skill", "path": ".agents/skills/ui-ux-pro-max" },
+        { "type": "rule", "path": ".agents/rules/ui-ux-pro-max.md" },
+        { "type": "workflow", "path": ".agents/workflows/ui-ux-pro-max.md" },
+        { "type": "data", "path": ".agents/skills/ui-ux-pro-max/data/" },
+        { "type": "scripts", "path": ".agents/skills/ui-ux-pro-max/scripts/" }
+      ],
+      "dependencies": { "python": ">=3.8" }
+    },
+    {
+      "name": "gsap",
+      "url": "https://github.com/greensock/GSAP.git",
+      "commit": "13e2b790546426a1a2e0e9b409f3f8dc6d6611f2",
+      "release": "v3.15.0",
+      "purpose": "High-performance frontend animation engine and scroll-driven interaction presets",
+      "license": "Standard GreenSock License",
+      "installed_components": [
+        { "type": "skill", "path": ".agents/skills/gsap-animation" },
+        { "type": "rule", "path": ".agents/rules/gsap-animation-patterns.md" },
+        { "type": "workflow", "path": ".agents/workflows/gsap-setup.md" },
+        { "type": "config", "path": ".agents/config/gsap_presets.json" },
+        { "type": "tools", "path": ".agents/tools/gsap/" }
+      ],
+      "dependencies": { "npm": "gsap@^3.15.0 (on-demand)" }
+    },
+    {
+      "name": "shadcn-ui",
+      "url": "https://github.com/shadcn-ui/ui.git",
+      "commit": "0132174664c07d41262fb51012d0cc782e458e6c",
+      "category": "Frontend UI / Capability",
+      "purpose": "Accessible, customizable Radix UI component system with Tailwind CSS and on-demand CLI scaffolding",
+      "license": "MIT",
+      "installed_components": [
+        { "type": "skill", "path": ".agents/skills/shadcn-ui" },
+        { "type": "rule", "path": ".agents/rules/shadcn-ui-patterns.md" },
+        { "type": "workflow", "path": ".agents/workflows/shadcn-ui.md" }
+      ],
+      "dependencies": { "node": ">=18.0.0", "npm": "shadcn@latest (CLI on-demand)" }
+    },
+    {
+      "name": "nextjs",
+      "url": "https://github.com/vercel/next.js.git",
+      "commit": "ea119d2702ba9252233c678ca74b4a310b5eedd0",
+      "category": "Frontend Framework",
+      "purpose": "Next.js App Router architecture, Server/Client components, Server Actions, Route Handlers, and Caching",
+      "license": "MIT",
+      "installed_components": [
+        { "type": "skill", "path": ".agents/skills/nextjs-developer" },
+        { "type": "rule", "path": ".agents/rules/nextjs-app-router.md" },
+        { "type": "workflow", "path": ".agents/workflows/nextjs-dev.md" }
+      ],
+      "dependencies": { "node": ">=18.17.0", "npm": "next@latest (project framework)" }
+    },
+    {
+      "name": "tailwindcss",
+      "url": "https://github.com/tailwindlabs/tailwindcss.git",
+      "commit": "fa81d697fe572a10ac150d18964a093a7a874081",
+      "category": "Styling Engine",
+      "purpose": "Utility-first styling, CSS variable design tokens, responsive layouts, and dark mode architecture",
+      "license": "MIT",
+      "installed_components": [
+        { "type": "skill", "path": ".agents/skills/tailwind-patterns" },
+        { "type": "rule", "path": ".agents/rules/tailwind-design-tokens.md" }
+      ],
+      "dependencies": { "npm": "tailwindcss@^3.4.0 || ^4.0.0 (project dependency)" }
+    },
+    {
+      "name": "realworld",
+      "url": "https://github.com/realworld-apps/realworld.git",
+      "commit": "ebbcdeb8d55b42a3a613c787560498b8ef10003f",
+      "category": "Reference Architecture",
+      "purpose": "Full-stack Conduit specification, REST API contracts, JWT auth patterns, and CRUD entity models",
+      "license": "MIT",
+      "installed_components": [
+        { "type": "skill", "path": ".agents/skills/realworld-reference" }
+      ],
+      "dependencies": {}
+    },
+    {
+      "name": "node-clean-architecture",
+      "url": "https://github.com/panagiop/node.js-clean-architecture.git",
+      "commit": "5248815b761261ca269c3d7e45f32e5f82c3ad31",
+      "category": "Backend Architecture",
+      "purpose": "Clean Architecture & Dependency Inversion for Node.js (Entities, Use Cases, Controllers, Repositories)",
+      "license": "MIT",
+      "installed_components": [
+        { "type": "skill", "path": ".agents/skills/nodejs-clean-architecture" },
+        { "type": "rule", "path": ".agents/rules/backend-clean-architecture.md" }
+      ],
+      "dependencies": {}
+    },
+    {
+      "name": "system-design-primer",
+      "url": "https://github.com/donnemartin/system-design-primer.git",
+      "commit": "ae9bbd7b02d90b9866215de185217d33f39ab733",
+      "category": "System Design Knowledge",
+      "purpose": "System design, scalability, availability, caching, sharding, load balancing, message queues, and CAP theorem",
+      "license": "CC-BY-SA-4.0",
+      "installed_components": [
+        { "type": "skill", "path": ".agents/skills/system-design-primer" },
+        { "type": "rule", "path": ".agents/rules/system-design-principles.md" },
+        { "type": "workflow", "path": ".agents/workflows/system-design.md" }
+      ],
+      "dependencies": {}
+    },
+    {
+      "name": "awesome-backend",
+      "url": "https://github.com/zhashkevych/awesome-backend.git",
+      "commit": "7d2fab346197d95e74e8a2557d96815dbe657418",
+      "category": "Technology Reference Matrix",
+      "purpose": "Curated backend technology decision framework across frameworks, databases, ORMs, and message brokers",
+      "license": "CC0-1.0",
+      "installed_components": [
+        { "type": "skill", "path": ".agents/skills/backend-tech-matrix" },
+        { "type": "config", "path": ".agents/config/backend_tech_matrix.json" },
+        { "type": "workflow", "path": ".agents/workflows/fullstack-architecture-decision.md" }
+      ],
+      "dependencies": {}
+    },
+    {
+      "name": "context7",
+      "url": "https://github.com/upstash/context7.git",
+      "commit": "70d2433eaeb7e17409f582f347ebca300645620a",
+      "release": "v4.2.0",
+      "category": "MCP Documentation Server",
+      "purpose": "Live version-specific documentation and code examples via Context7 MCP (resolve-library-id, query-docs)",
+      "license": "Apache-2.0",
+      "installed_components": [
+        { "type": "skill", "path": ".agents/skills/documentation-lookup" },
+        { "type": "rule", "path": ".agents/rules/documentation-lookup.md" },
+        { "type": "rule", "path": ".agents/rules/mcp-routing-rules.md" },
+        { "type": "config", "path": ".agents/config/mcp_registry.json" },
+        { "type": "config", "path": ".agents/config/mcp_config.json" },
+        { "type": "script", "path": "scripts/mcp-health-check.py" }
+      ],
+      "dependencies": { "node": ">=18.0.0", "npm": "@upstash/context7-mcp@^4.2.0" }
+    }
+  ]
+}

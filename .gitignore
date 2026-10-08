@@ -1,0 +1,44 @@
+# ==============================================================================
+# Synaptor .gitignore
+# ==============================================================================
+
+# Environment & Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+credentials.*
+secrets.*
+
+# Node.js & Dependencies
+node_modules/
+dist/
+build/
+.next/
+
+# Python Ecosystem & Test Caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+.venv/
+venv/
+
+# Databases & Runtime Logs
+*.sqlite
+*.sqlite3
+*.db
+*.log
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Ignored Directories
+archive/
+docs/
+scratch/

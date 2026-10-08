@@ -1,0 +1,326 @@
+import sys, os
+try:
+    if hasattr(sys.stdout, 'reconfigure'):
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    if hasattr(sys.stderr, 'reconfigure'):
+        sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+except Exception:
+    pass
+_TOOL_DIR = os.path.dirname(os.path.abspath(__file__))
+if _TOOL_DIR not in sys.path:
+    sys.path.insert(0, _TOOL_DIR)
+"""Deterministic structural navigation tools backed by the tree-sitter catalog.
+
+These are read-only lookups against the structural index built next to the
+campaign database. They are navigation HINTS layered on top of read_file and
+list_files, never a replacement: an empty answer means "not in the index",
+not "absent from the code", and every response says which. When the index is
+missing or stale the tools degrade to a pointer back at the baseline tools,
+so a researcher without an index behaves exactly as before these existed.
+"""
+
+import logging
+import os
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
+
+from core.context import current_run_context
+from core.llm_gateway import wrap_untrusted_content
+from core.structural_index import StructuralIndex, state_dir_for_db
+
+logger = logging.getLogger(__name__)
+
+# A function body returned by get_function_boundary is bounded the same way
+# read_file bounds whole files, just tighter: a boundary read that returns
+# more than this is cheaper done through read_file anyway.
+MAX_SNIPPET_BYTES = 32_768
+
+_PAGE_SIZE = 20
+
+_UNAVAILABLE = (
+    "Structural index unavailable. Fall back to read_file and list_files; "
+    "this changes nothing about what you can read, only how you navigate."
+)
+
+_HINT = (
+    "NOTE: structural results are navigation hints. Absence here is not "
+    "absence in the code; confirm anything load-bearing with read_file."
+)
+
+
+def _degraded_note(status: str) -> str:
+    return (
+        f"NOTE: index status is '{status}', so some files were not indexed; "
+        "treat misses as unknown, not as proof of absence."
+    )
+
+
+def _load_index() -> Tuple[Optional[StructuralIndex], Optional[str]]:
+    """The catalog for the active run, or (None, reason). Never raises."""
+    ctx = current_run_context.get()
+    if ctx is None:
+        return None, "Error: No active execution context."
+    if not getattr(ctx, "db_path", None):
+        return None, _UNAVAILABLE
+    try:
+        from core.paths import resolve_db_path
+        state_dir = state_dir_for_db(resolve_db_path(ctx.db_path))
+        idx = StructuralIndex(state_dir)
+        if not idx.available():
+            return None, _UNAVAILABLE
+        return idx, None
+    except Exception:
+        logger.warning("structural index load failed", exc_info=True)
+        return None, _UNAVAILABLE
+
+
+def _clean_path(filepath: str) -> str:
+    return (filepath or "").replace("\\", "/").removeprefix("./")
+
+
+def _suffix_match(a: str, b: str) -> bool:
+    """Component-aligned equality or suffix of each other, either direction."""
+    return a == b or a.endswith("/" + b) or b.endswith("/" + a)
+
+
+def _footer(idx: StructuralIndex) -> str:
+    status = idx.partition_status()
+    if status != "complete":
+        return _degraded_note(status) + "\n" + _HINT
+    return _HINT
+
+
+def _symbol_line(row: Dict[str, Any]) -> str:
+    sig = row.get("signature") or row.get("name") or ""
+    return (
+        f"{row.get('file_path')}:{row.get('start_line')}-{row.get('end_line')}"
+        f" [{row.get('kind')}] {sig}"
+    )
+
+
+def _resolve_unique(
+    idx: StructuralIndex, symbol: str, filepath: str
+) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
+    """One definition row for `symbol`, or (None, message).
+
+    An exact filepath match wins; otherwise candidates whose catalog path
+    and the given path are component-aligned suffixes of each other are
+    kept, so 'services/orders.py' finds 'app/services/orders.py' when that
+    is unambiguous. Ambiguity is refused with the candidate list rather
+    than silently picking one: a caller graph for the wrong overload reads
+    as evidence.
+    """
+    resolved = idx.resolve_symbol(symbol)
+    rows = resolved["results"]
+    want = _clean_path(filepath)
+    if want:
+        exact = [r for r in rows if r.get("file_path") == want]
+        rows = exact or [
+            r for r in rows if _suffix_match(r.get("file_path") or "", want)
+        ]
+    if not rows:
+        where = f" in '{want}'" if want else ""
+        return None, (
+            f"No definition of '{symbol}'{where} in the structural index.\n"
+            + _footer(idx)
+        )
+    if len(rows) > 1:
+        listing = "\n".join(_symbol_line(r) for r in rows[:_PAGE_SIZE])
+        return None, (
+            f"'{symbol}' is ambiguous ({len(rows)} definitions). Narrow it "
+            "with the filepath argument:\n"
+            + wrap_untrusted_content(listing, filename="structural_index")
+            + "\n" + _footer(idx)
+        )
+    return rows[0], None
+
+
+def find_symbol(name: str, offset: int = 0) -> str:
+    """Looks up where a function, method, or class is defined, by name or qualified name."""
+    try:
+        idx, err = _load_index()
+        if idx is None:
+            return err
+        offset = max(0, int(offset or 0))
+        res = idx.resolve_symbol(name, limit=_PAGE_SIZE, offset=offset)
+        if not res["results"]:
+            return f"No definition of '{name}' in the structural index.\n" + _footer(idx)
+        listing = "\n".join(_symbol_line(r) for r in res["results"])
+        shown = len(res["results"])
+        head = f"{res['total']} definition(s) of '{name}'"
+        if res["total"] > shown:
+            head += f" (showing {offset + 1}-{offset + shown}; pass offset={offset + shown} for more)"
+        return (
+            head + ":\n"
+            + wrap_untrusted_content(listing, filename="structural_index")
+            + "\n" + _footer(idx)
+        )
+    except Exception as e:
+        logger.warning("find_symbol failed: %s", e, exc_info=True)
+        return _UNAVAILABLE
+
+
+def find_callers(symbol: str, filepath: str = "", offset: int = 0) -> str:
+    """Lists call sites that invoke the given function or method."""
+    try:
+        idx, err = _load_index()
+        if idx is None:
+            return err
+        row, msg = _resolve_unique(idx, symbol, filepath)
+        if row is None:
+            return msg
+        offset = max(0, int(offset or 0))
+        res = idx.find_callers(row, limit=_PAGE_SIZE, offset=offset)
+        if not res["results"]:
+            return (
+                f"No recorded callers of '{symbol}' "
+                f"({row['file_path']}:{row['start_line']}).\n"
+                "Note: 0 direct call sites in the index. If this is an internal "
+                "helper (not a route handler, exported API, or callback "
+                "registered by reference), verify how untrusted input reaches "
+                "it before reporting a finding against it.\n" + _footer(idx)
+            )
+        lines = []
+        for e in res["results"]:
+            caller = e.get("caller") or "<module>"
+            mark = "" if e.get("edge_kind") == "direct" else " (name-only match)"
+            lines.append(f"{e['file_path']}:{e['line']} in {caller}{mark}")
+        head = f"{res['total']} call site(s) of '{symbol}'"
+        if res.get("has_more"):
+            shown = len(res["results"])
+            head += f" (showing {offset + 1}-{offset + shown}; pass offset={offset + shown} for more)"
+        return (
+            head + ":\n"
+            + wrap_untrusted_content("\n".join(lines), filename="structural_index")
+            + "\n" + _footer(idx)
+        )
+    except Exception as e:
+        logger.warning("find_callers failed: %s", e, exc_info=True)
+        return _UNAVAILABLE
+
+
+def find_callees(symbol: str, filepath: str = "", offset: int = 0) -> str:
+    """Lists the functions a given function or method calls."""
+    try:
+        idx, err = _load_index()
+        if idx is None:
+            return err
+        row, msg = _resolve_unique(idx, symbol, filepath)
+        if row is None:
+            return msg
+        offset = max(0, int(offset or 0))
+        res = idx.find_callees(row, limit=_PAGE_SIZE, offset=offset)
+        if not res["results"]:
+            return (
+                f"No recorded callees in '{symbol}' "
+                f"({row['file_path']}:{row['start_line']}).\n" + _footer(idx)
+            )
+        lines = []
+        for e in res["results"]:
+            if e.get("callee_id"):
+                target = f" -> {e.get('callee_file')}:{e.get('callee_start_line')}"
+            else:
+                target = " (external or not indexed)"
+            lines.append(f"line {e['line']}: {e['callee_name']}{target}")
+        head = f"{res['total']} call(s) from '{symbol}'"
+        if res.get("has_more"):
+            shown = len(res["results"])
+            head += f" (showing {offset + 1}-{offset + shown}; pass offset={offset + shown} for more)"
+        return (
+            head + ":\n"
+            + wrap_untrusted_content("\n".join(lines), filename="structural_index")
+            + "\n" + _footer(idx)
+        )
+    except Exception as e:
+        logger.warning("find_callees failed: %s", e, exc_info=True)
+        return _UNAVAILABLE
+
+
+async def get_function_boundary(filepath: str, line: int) -> str:
+    """Returns the innermost function enclosing file:line, with its source."""
+    try:
+        idx, err = _load_index()
+        if idx is None:
+            return err
+        ctx = current_run_context.get()
+        clean = _clean_path(filepath)
+        try:
+            lineno = int(line)
+        except (TypeError, ValueError):
+            return f"Error: '{line}' is not a line number."
+
+        res = idx.enclosing_symbol(clean, lineno)
+        if not res.get("found"):
+            return (
+                f"No indexed function encloses {clean}:{lineno}. Use read_file "
+                "to inspect that region directly.\n" + _footer(idx)
+            )
+
+        # Same single-file jail rule as read_file: a single-file scan may
+        # only pull source from the scanned file. The check runs on the
+        # catalog path that is actually read below, so a suffix spelling
+        # of some other file cannot dodge the jail.
+        resolved = res["file_path"]
+        # The catalog is rooted at path_root when the operator declared one
+        # (see create_structural_index_node), while this jail may be a
+        # slice of that repository. Rebase the catalog path to the jail so
+        # the gate and the sandbox read below judge the file it actually
+        # names. A catalog row outside the jail is structural context, not
+        # readable source: refuse it outright rather than hand the sandbox
+        # a spelling that a same-named file inside the jail could alias.
+        _root = str(getattr(ctx, "path_root", "") or "")
+        if _root and resolved and ctx.jail_dir:
+            try:
+                _jail_real = os.path.realpath(ctx.jail_dir)
+                _cand = os.path.realpath(os.path.join(_root, resolved))
+                if (os.path.isfile(_cand)
+                        and not os.path.exists(os.path.join(ctx.jail_dir, resolved))):
+                    if not _cand.startswith(_jail_real + os.sep):
+                        return (
+                            "Error: Permission denied. "
+                            f"'{resolved}' lies outside the scan target; it "
+                            "is indexed for structural context only."
+                        )
+                    resolved = os.path.relpath(_cand, _jail_real).replace(os.sep, "/")
+            except OSError:
+                pass
+        if ctx.target_file and os.path.isfile(ctx.target_file) and ctx.jail_dir and resolved:
+            req_target = os.path.realpath(os.path.join(ctx.jail_dir, resolved))
+            real_target = os.path.realpath(ctx.target_file)
+            if os.path.exists(req_target) and req_target != real_target:
+                return (
+                    "Error: Permission denied. Single-file scans may only read "
+                    f"the scanned file '{os.path.basename(real_target)}'."
+                )
+
+        header = (
+            f"{res.get('qualified_name') or ''} [{res.get('kind')}] "
+            f"{res['file_path']}:{res['start_line']}-{res['end_line']}"
+        )
+
+        # Read the body through the same sandbox path as read_file; a
+        # boundary row is never an excuse to touch the host filesystem.
+        sandbox = ctx.sandbox
+        if sandbox is None or not hasattr(sandbox, "read_file"):
+            target = ctx.jail_dir or ctx.target_file or ""
+            from core.environments.static_env import StaticOnlyEnvironment
+            sandbox = StaticOnlyEnvironment(target_path=target)
+        try:
+            content_bytes = await sandbox.read_file(Path(resolved))
+        except Exception as e:
+            if ctx.sandbox is not None:
+                return f"Error: sandbox read failed for '{res['file_path']}': {type(e).__name__}: {e}"
+            return f"Error reading file '{res['file_path']}': {e}"
+        text = content_bytes.decode("utf-8", errors="replace")
+        selected = text.splitlines()[res["start_line"] - 1 : res["end_line"]]
+        snippet = "\n".join(selected)
+        if len(snippet) > MAX_SNIPPET_BYTES:
+            snippet = snippet[:MAX_SNIPPET_BYTES] + "\n[TRUNCATED: boundary exceeds snippet limit; use read_file]"
+        return (
+            header + "\n"
+            + wrap_untrusted_content(snippet, filename=res["file_path"])
+            + "\n" + _footer(idx)
+        )
+    except Exception as e:
+        logger.warning("get_function_boundary failed: %s", e, exc_info=True)
+        return _UNAVAILABLE

@@ -1,0 +1,20 @@
+# Agent Reach Configuration
+version: "1.0.0"
+read_only_default: true
+channels:
+  web:
+    enabled: true
+  rss:
+    enabled: true
+  github:
+    enabled: true
+  twitter:
+    enabled: true
+  reddit:
+    enabled: true
+  youtube:
+    enabled: true
+  bilibili:
+    enabled: true
+  xiaohongshu:
+    enabled: true

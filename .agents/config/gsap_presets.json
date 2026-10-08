@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "name": "gsap-animation-presets",
+  "version": "3.15.0",
+  "presets": {
+    "fade_up": {
+      "name": "Fade Up",
+      "description": "Smooth entrance animation fading in while sliding up",
+      "params": {
+        "y": 30,
+        "opacity": 0,
+        "duration": 0.6,
+        "ease": "power2.out"
+      }
+    },
+    "staggered_cards": {
+      "name": "Staggered Grid Entrance",
+      "description": "Cascading entry for feature cards or gallery items",
+      "params": {
+        "y": 40,
+        "opacity": 0,
+        "duration": 0.7,
+        "stagger": 0.12,
+        "ease": "power3.out"
+      }
+    },
+    "hero_reveal": {
+      "name": "Hero Section Split Reveal",
+      "description": "Sequential timeline reveal for badge, headline, paragraph, and CTA",
+      "timeline": [
+        { "target": ".hero-badge", "vars": { "opacity": 0, "y": 20, "duration": 0.4 } },
+        { "target": ".hero-title", "vars": { "opacity": 0, "y": 30, "duration": 0.6 }, "position": "-=0.2" },
+        { "target": ".hero-subtitle", "vars": { "opacity": 0, "y": 20, "duration": 0.5 }, "position": "-=0.3" },
+        { "target": ".hero-cta", "vars": { "opacity": 0, "scale": 0.95, "duration": 0.4 }, "position": "-=0.2" }
+      ]
+    },
+    "scroll_scrub_progress": {
+      "name": "Scroll Scrub Progress Bar",
+      "description": "Reading progress bar linked to page scroll position",
+      "plugin": "ScrollTrigger",
+      "code": "gsap.to('.progress-bar', { scaleX: 1, ease: 'none', scrollTrigger: { scrub: 0.3 } });"
+    },
+    "magnetic_hover": {
+      "name": "Magnetic Button Hover",
+      "description": "Subtle cursor tracking effect for interactive buttons",
+      "ease": "power2.out",
+      "duration": 0.3
+    }
+  }
+}

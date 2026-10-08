@@ -1,0 +1,78 @@
+import sys, os
+try:
+    if hasattr(sys.stdout, 'reconfigure'):
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    if hasattr(sys.stderr, 'reconfigure'):
+        sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+except Exception:
+    pass
+_TOOL_DIR = os.path.dirname(os.path.abspath(__file__))
+if _TOOL_DIR not in sys.path:
+    sys.path.insert(0, _TOOL_DIR)
+from .research_tools import (
+    read_file,
+    write_file,
+    list_files,
+    report_findings,
+    get_findings,
+    score_risk,
+    record_plan,
+    get_plan,
+    record_threat_model,
+    get_threat_model,
+    record_summary,
+    get_summary,
+    record_exploit_chain,
+    record_learning,
+    dedupe_findings,
+    generate_report,
+    calibrate_finding,
+    get_security_guidance,
+    query_lineage,
+    get_git_log,
+    get_git_diff,
+    detect_vcs_info,
+)
+from .sandbox_tools import (
+    run_sandbox,
+    apply_patch,
+    run_sandbox_with_evidence,
+    check_reached_sink_evidence,
+)
+from .structural_tools import (
+    find_symbol,
+    find_callers,
+    find_callees,
+    get_function_boundary,
+)
+
+TOOLS: dict[str, object] = {
+    "read_file": read_file,
+    "write_file": write_file,
+    "list_files": list_files,
+    "get_git_log": get_git_log,
+    "get_git_diff": get_git_diff,
+    "report_findings": report_findings,
+    "get_findings": get_findings,
+    "score_risk": score_risk,
+    "calibrate_finding": calibrate_finding,
+    "record_plan": record_plan,
+    "get_plan": get_plan,
+    "record_threat_model": record_threat_model,
+    "get_threat_model": get_threat_model,
+    "record_summary": record_summary,
+    "get_summary": get_summary,
+    "record_exploit_chain": record_exploit_chain,
+    "record_learning": record_learning,
+    "dedupe_findings": dedupe_findings,
+    "generate_report": generate_report,
+    "run_sandbox": run_sandbox,
+    "apply_patch": apply_patch,
+    "run_sandbox_with_evidence": run_sandbox_with_evidence,
+    "get_security_guidance": get_security_guidance,
+    "query_lineage": query_lineage,
+    "find_symbol": find_symbol,
+    "find_callers": find_callers,
+    "find_callees": find_callees,
+    "get_function_boundary": get_function_boundary,
+}

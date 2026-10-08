@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "name": "mantis-configuration",
+  "version": "1.0.0",
+  "upstream": {
+    "repository": "https://github.com/google/mantis.git",
+    "commit": "db071ca1375d3112c3240a6b9a8cf633a69a2a91"
+  },
+  "settings": {
+    "sandbox": "static-only",
+    "default_model": "gemini-3.7-flash",
+    "reasoning_effort": "high",
+    "timeout_seconds": 120,
+    "database_path": ".agents/data/mantis_knowledge.db",
+    "preflight_checks": true,
+    "responsible_disclosure_mode": true
+  }
+}
