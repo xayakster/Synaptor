@@ -1,6 +1,6 @@
 # Synaptor
 
-[![CI](https://github.com/xayakster/Synaptor/actions/workflows/ci.yml/badge.svg)](https://github.com/xayakster/Synaptor/actions/workflows/ci.yml)
+[![CI](https://github.com/xayakster/Synaptor/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/xayakster/Synaptor/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python Version](https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12-brightgreen)](https://www.python.org/)
 [![Node Version](https://img.shields.io/badge/Node.js-18%2B%20%7C%2020%2B%20%7C%2022%2B-green)](https://nodejs.org/)
