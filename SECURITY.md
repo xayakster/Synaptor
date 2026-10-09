@@ -10,6 +10,7 @@ Security updates and vulnerability patches are actively maintained for the follo
 
 | Version | Supported |
 | :--- | :--- |
+| `3.3.x` | ✅ Supported (Current) |
 | `3.2.x` | ✅ Supported |
 | `3.1.x` | ✅ Supported |
 | `< 3.1` | ❌ End of Life |

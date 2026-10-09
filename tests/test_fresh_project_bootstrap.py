@@ -35,6 +35,9 @@ def test_fresh_project_simulation():
         assert os.path.exists(os.path.join(fresh_agents, "skills", "project-scaffolding", "SKILL.md"))
         assert os.path.exists(os.path.join(fresh_agents, "skills", "ui-ux-pro-max", "SKILL.md"))
         assert os.path.exists(os.path.join(fresh_agents, "skills", "gsap-animation", "SKILL.md"))
+        assert os.path.exists(os.path.join(fresh_agents, "skills", "motion-animation", "SKILL.md"))
+        assert os.path.exists(os.path.join(fresh_agents, "skills", "graphify", "SKILL.md"))
+        assert os.path.exists(os.path.join(fresh_agents, "skills", "brag-showcase", "SKILL.md"))
         assert os.path.exists(os.path.join(fresh_agents, "manifest.json"))
         assert os.path.exists(os.path.join(fresh_agents, "MANIFEST.md"))
         

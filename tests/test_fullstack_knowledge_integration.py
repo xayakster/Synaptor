@@ -10,7 +10,7 @@ def test_manifest_contains_14_repositories():
     with open(manifest_path, "r", encoding="utf-8") as f:
         data = json.load(f)
     
-    assert data.get("version") in ["3.0.0", "3.1.0", "3.2.0"]
+    assert data.get("version") in ["3.0.0", "3.1.0", "3.2.0", "3.3.0"]
     repos = data.get("upstream_repositories", [])
     assert len(repos) >= 14, f"Expected at least 14 repositories, found {len(repos)}"
     

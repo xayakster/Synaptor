@@ -1,0 +1,68 @@
+{
+  "name": "Synaptor Motion Presets",
+  "version": "1.0.0",
+  "upstream": "https://github.com/motiondivision/motion.git",
+  "springs": {
+    "snappy": {
+      "type": "spring",
+      "stiffness": 400,
+      "damping": 25,
+      "mass": 0.8
+    },
+    "smooth": {
+      "type": "spring",
+      "stiffness": 300,
+      "damping": 30,
+      "mass": 1.0
+    },
+    "gentle": {
+      "type": "spring",
+      "stiffness": 200,
+      "damping": 20,
+      "mass": 1.2
+    },
+    "bouncy": {
+      "type": "spring",
+      "stiffness": 500,
+      "damping": 15,
+      "mass": 0.5
+    },
+    "layout": {
+      "type": "spring",
+      "stiffness": 500,
+      "damping": 35,
+      "mass": 1.0
+    }
+  },
+  "variants": {
+    "fade": {
+      "initial": { "opacity": 0 },
+      "animate": { "opacity": 1 },
+      "exit": { "opacity": 0 }
+    },
+    "slideUp": {
+      "initial": { "opacity": 0, "y": 20 },
+      "animate": { "opacity": 1, "y": 0 },
+      "exit": { "opacity": 0, "y": 15 }
+    },
+    "slideDown": {
+      "initial": { "opacity": 0, "y": -20 },
+      "animate": { "opacity": 1, "y": 0 },
+      "exit": { "opacity": 0, "y": -15 }
+    },
+    "scaleIn": {
+      "initial": { "opacity": 0, "scale": 0.92 },
+      "animate": { "opacity": 1, "scale": 1.0 },
+      "exit": { "opacity": 0, "scale": 0.95 }
+    },
+    "cardHover": {
+      "whileHover": { "scale": 1.02, "y": -4 },
+      "whileTap": { "scale": 0.98 }
+    }
+  },
+  "stagger": {
+    "fast": 0.05,
+    "default": 0.08,
+    "slow": 0.15
+  }
+}

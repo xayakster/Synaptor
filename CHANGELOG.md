@@ -6,6 +6,34 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [3.3.0] - 2026-10-09
+
+### Added
+- **Graphify AST Codebase Intelligence (`Graphify-Labs/graphify`)**:
+  - Integrated zero-dependency AST knowledge graph engine (`.agents/tools/graphify/graphify_runner.py`).
+  - Added `.agents/skills/graphify/SKILL.md` for deterministic graph queries, BFS/DFS path traversal, and god node detection.
+  - Added mandatory `.agents/rules/graphify-auto-update.md` enforcing automatic graph freshness updates after noticeable code changes.
+  - Added `.agents/workflows/graphify.md` and `.agents/workflows/graphify-update.md`.
+  - Added `graphify-out/` to `.gitignore`.
+- **Motion Declarative Animation Engine (`motiondivision/motion`)**:
+  - Added `.agents/skills/motion-animation/SKILL.md` for declarative React (`motion/react`), Vue (`motion/vue`), and DOM animation.
+  - Added `.agents/rules/motion-animation-patterns.md` governing spring physics parameters, `layoutId` morph discipline, and `AnimatePresence` stable keys.
+  - Added standard animation presets `.agents/config/motion_presets.json` and workflow `.agents/workflows/motion-setup.md`.
+- **Brag Project Showcase Video Generator (`latent-spaces/brag`)**:
+  - Added `.agents/skills/brag-showcase/SKILL.md` for automated narrative scriptwriting, multi-scene storyboard composition, and video trailers.
+  - Added `.agents/rules/brag-safety.md` enforcing strict 100% local rendering, zero external uploads, and secret scrubbing.
+  - Added `.agents/workflows/brag-video.md` and preflight diagnostic tool `.agents/tools/brag/brag_preflight.py`.
+  - Added `brag-out/` and `.brag-cache/` to `.gitignore`.
+- **Scripts Cleanup & CI Hardening**:
+  - Removed 18 legacy one-off installer and scratch scripts from `scripts/`.
+  - Retained exactly 5 production tools and wrappers (`bootstrap-agent-environment.py`, `bootstrap.ps1`, `bootstrap.sh`, `mcp-health-check.py`, `security-audit-scan.py`).
+  - Added `requirements-dev.txt` and updated `.github/workflows/ci.yml` to resolve GitHub Actions CI dependency missing errors on Ubuntu and Windows runners.
+- **Updated Manifests & Docs**:
+  - Bumped `.agents/manifest.json` and `.agents/MANIFEST.md` to track 18 integrated repositories.
+  - Updated `README.md` and `AGENT_INFRASTRUCTURE.md`.
+
+---
+
 ## [3.2.0] - 2026-10-08
 
 ### Added

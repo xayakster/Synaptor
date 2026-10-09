@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "name": "synaptor-agent-infrastructure",
-  "version": "3.2.0",
-  "updated_at": "2026-10-08",
+  "version": "3.3.0",
+  "updated_at": "2026-10-09",
   "upstream_repositories": [
     {
       "name": "planning-with-files",
@@ -113,6 +113,49 @@
         { "type": "tools", "path": ".agents/tools/gsap/" }
       ],
       "dependencies": { "npm": "gsap@^3.15.0 (on-demand)" }
+    },
+    {
+      "name": "motion",
+      "url": "https://github.com/motiondivision/motion.git",
+      "category": "Declarative Animation Engine",
+      "purpose": "Declarative animation for React (motion/react), Vue (motion/vue), and vanilla DOM with springs, layoutId morphs, and AnimatePresence",
+      "license": "MIT",
+      "installed_components": [
+        { "type": "skill", "path": ".agents/skills/motion-animation" },
+        { "type": "rule", "path": ".agents/rules/motion-animation-patterns.md" },
+        { "type": "workflow", "path": ".agents/workflows/motion-setup.md" },
+        { "type": "config", "path": ".agents/config/motion_presets.json" }
+      ],
+      "dependencies": { "node": ">=18.0.0", "npm": "motion@latest (or framer-motion)" }
+    },
+    {
+      "name": "graphify",
+      "url": "https://github.com/Graphify-Labs/graphify.git",
+      "category": "Codebase Intelligence & Knowledge Graph",
+      "purpose": "AST-based codebase intelligence, dependency graphs, god node detection, visual D3 graph explorer, and mandatory freshness auto-update rule",
+      "license": "Apache-2.0",
+      "installed_components": [
+        { "type": "skill", "path": ".agents/skills/graphify" },
+        { "type": "rule", "path": ".agents/rules/graphify-auto-update.md" },
+        { "type": "workflow", "path": ".agents/workflows/graphify.md" },
+        { "type": "workflow", "path": ".agents/workflows/graphify-update.md" },
+        { "type": "tool", "path": ".agents/tools/graphify/graphify_runner.py" }
+      ],
+      "dependencies": { "python": ">=3.8" }
+    },
+    {
+      "name": "brag",
+      "url": "https://github.com/latent-spaces/brag.git",
+      "category": "Project Showcase & Video Generator",
+      "purpose": "Automated project showcase videos, narrative scriptwriting, storyboard generation, and local video rendering with strict privacy controls",
+      "license": "Apache-2.0",
+      "installed_components": [
+        { "type": "skill", "path": ".agents/skills/brag-showcase" },
+        { "type": "rule", "path": ".agents/rules/brag-safety.md" },
+        { "type": "workflow", "path": ".agents/workflows/brag-video.md" },
+        { "type": "tool", "path": ".agents/tools/brag/brag_preflight.py" }
+      ],
+      "dependencies": { "python": ">=3.8", "optional_node": ">=18.0.0", "optional_ffmpeg": ">=4.0" }
     },
     {
       "name": "shadcn-ui",

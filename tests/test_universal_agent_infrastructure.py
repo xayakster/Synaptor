@@ -22,7 +22,10 @@ def test_manifest_integrity():
         "agent-reach",
         "cookiecutter",
         "ui-ux-pro-max-skill",
-        "gsap"
+        "gsap",
+        "motion",
+        "graphify",
+        "brag"
     ]
     for er in expected_repos:
         assert er in repos, f"Repo {er} missing from manifest"

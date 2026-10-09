@@ -38,7 +38,13 @@ Thumbs.db
 .idea/
 .vscode/
 
-# Ignored Directories
+# Ignored Directories & Scratch
 archive/
 docs/
 scratch/
+graphify-out/
+brag-out/
+.brag-cache/
+task_plan.md
+findings.md
+progress.md
