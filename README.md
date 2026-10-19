@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python Version](https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12-brightgreen)](https://www.python.org/)
 [![Node Version](https://img.shields.io/badge/Node.js-18%2B%20%7C%2020%2B%20%7C%2022%2B-green)](https://nodejs.org/)
-[![Tests](https://img.shields.io/badge/Tests-40%2B%20Passing-success)](tests/)
+[![Tests](https://img.shields.io/badge/Tests-44%20Passing-success)](tests/)
 [![Security: Hardened](https://img.shields.io/badge/Security-Hardened%20%26%20Audited-blueviolet)](SECURITY.md)
 
 **Synaptor** is an autonomous, multi-agent neural development infrastructure designed for AI-assisted coding assistants (Claude Code, Google Antigravity, Cursor, Copilot CLI, Gemini, Codex).
@@ -87,12 +87,15 @@ flowchart TD
 ├── .github/
 │   └── workflows/      # GitHub Actions CI Automation
 ├── scripts/            # Cross-Platform Automation & Health Check Scripts
-│   ├── bootstrap-agent-environment.py # One-Command Environment Initializer
+│   ├── bootstrap-agent-environment.py # Cross-Platform Environment Initializer
+│   ├── bootstrap.ps1                  # Native Windows PowerShell One-Click Installer
+│   ├── bootstrap.sh                   # Native Linux / macOS Shell Bootstrap
 │   ├── mcp-health-check.py            # Live MCP stdio Verification
 │   └── security-audit-scan.py         # Static Security & Secret Scanner
-├── tests/              # Comprehensive Automated Pytest Suite (40+ Tests)
+├── tests/              # Comprehensive Automated Pytest Suite (44 Tests)
 ├── .env.example        # Clean Environment Variable Template
 ├── .gitignore          # Production-Grade Multi-Category Ignore Rules
+├── requirements-dev.txt # Python Development & CI Dependencies
 ├── LICENSE             # MIT License
 └── README.md           # Developer & Platform Documentation
 ```
@@ -145,6 +148,36 @@ pytest -v tests/
 ```
 
 All automated tests execute in under 15 seconds with 100% pass guarantee.
+
+---
+
+## 🛠 Available Scripts
+
+All repository automation scripts are located in `scripts/` and can be executed across Windows, Linux, and macOS:
+
+| Script / Command | Platform | Description |
+|---|---|---|
+| `python scripts/bootstrap-agent-environment.py` | Cross-Platform | Initializes virtual environment, checks dependencies & verifies 18 subsystems |
+| `.\scripts\bootstrap.ps1` | Windows | Native PowerShell one-click bootstrap runner |
+| `./scripts/bootstrap.sh` | Linux / macOS | Native Bash one-click bootstrap runner |
+| `python scripts/mcp-health-check.py` | Cross-Platform | Validates stdio JSON-RPC handshake for all configured MCP servers |
+| `python scripts/security-audit-scan.py` | Cross-Platform | High-speed static scanner for secrets, tokens, and unsafe paths |
+| `pytest -v tests/` | Cross-Platform | Executes full 44-test automated test suite |
+
+---
+
+## ⚙️ Environment Configuration
+
+Synaptor supports optional live documentation, search, and observability integrations configured via environment variables. Copy `.env.example` to `.env` to configure:
+
+| Variable | Required | Description | Example |
+|---|---|---|---|
+| `CONTEXT7_API_KEY` | No | Context7 Live Framework Documentation MCP | `ctx7_live_...` |
+| `TAVILY_API_KEY` | No | Tavily Real-Time Web & Neural Search MCP | `tvly-...` |
+| `SENTRY_AUTH_TOKEN` | No | Sentry Project Authentication Token | `sntrys_...` |
+| `SENTRY_ORG` | No | Sentry Organization Slug | `my-org` |
+| `DATABASE_URL` | No | PostgreSQL / Application Database Connection | `postgresql://user:password@localhost:5432/synaptor_db` |
+| `RPC_URL` | No | EVM / Web3 JSON-RPC Provider Endpoint | `https://eth-mainnet.g.alchemy.com/v2/...` |
 
 ---
 
